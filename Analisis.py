@@ -98,10 +98,10 @@ class Panaderia: # clase
       panes_panadero = {'Pan Frances': int(panadero['Pan Frances'].values[0]),'Pan Queso': int(panadero['Pan Queso'].values[0]),'Pancacho': int(panadero['Pancacho'].values[0])} # diccionarios que toman el primer valor de cada pan
       complejida_panadero = {'Pan Frances': float(panadero['Complejidad Pan Frances'].values[0]),'Pan Queso': float(panadero['Complejidad Pan Quezo'].values[0]),'Pancacho': float(panadero['Complejidad Pancacho'].values[0])}
       eficiencia_final = {}
-      for pan in panes_panadero:
-          cantidad = panes_panadero[pan]
-          complejidad = complejida_panadero[pan]
-          eficiencia_final[pan] = cantidad * complejidad
+      for i1 in panes_panadero:
+          cantidad = panes_panadero[i1]
+          complejidad = complejida_panadero[i1]
+          eficiencia_final[i1] = (cantidad * complejidad)
       return eficiencia, estado, panes_panadero, complejida_panadero, eficiencia_final # regreso los valores
     def Grafi_produccion(self, panes_panadero):
         tiposde_pan = ['Pan Frances', 'Pan Queso', 'Pancacho'] # creo una lista
