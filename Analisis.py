@@ -77,7 +77,21 @@ class Panaderia: # clase
                 'Eficiencia': eficiencia,  
                 'Estado': estado})
         return True
-    
+    def reporte_general(self):
+        # 1 Reporte general de nombre eficiencia y estado 
+        df = pd.read_csv(self.archivo)
+        # Agrego una verificacion por si no hay datos
+        if df.size == 0:
+            print ('El archivo esta vacio registre almenos 1 usuario')
+            return
+        else:
+            reporte_g = df[['Nombre', 'Eficiencia', 'Estado']]
+        # 2 Estadisticas relevante
+        
+    def reporte_individual(self):
+        pass
+
+
     
             
 
