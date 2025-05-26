@@ -23,9 +23,9 @@ class Panaderia: # clase
 #Registro
     def registro():
         nombre = str(nombre)#  lo comvertimos a tipo texto
-        Com_Pf = round(random.randint(1, 1,5),2) # generamos el numero aleatorio entre 1 y 1,5
-        Com_Pq = round(random.randint(1, 1,5),2)
-        Com_Pc = round(random.randint(1, 1,5),2)
+        Com_Pf = round(random.randint(1, 1.5),2) # generamos el numero aleatorio entre 1 y 1,5
+        Com_Pq = round(random.randint(1, 1.5),2)
+        Com_Pc = round(random.randint(1, 1.5),2)
         while True: # bucle infinito
             try:# validaciones
                 pan_frances = int(pan_frances) #convertimos a entero
@@ -64,18 +64,20 @@ class Panaderia: # clase
             estado = "Cumple"
         else:
             estado = "No cumple"
-        with open(self.archivo, 'a', newline='')as f:  
+        with open(self.archivo, 'a', newline='') as f:  
             writer = csv.DictWriter(f, fieldnames=self.campos)
-            writer.writeheader({
+            writer.writerow({  # Corregi writeheader por writerow
                 'Nombre': nombre, 
                 'Pan Frances': pan_frances, 
-                'Pan Quezo': pan_quezo, 
+                'Pan Queso': pan_quezo,  
                 'Pancacho': pancacho,
                 'Complejidad Pan Frances': Com_Pf, 
-                'Complejidad Pan Quezo': Com_Pq, 
+                'Complejidad Pan Queso': Com_Pq, 
                 'Complejidad Pancacho': Com_Pc, 
-                'Eficiecncia': eficiencia, 
+                'Eficiencia': eficiencia,  
                 'Estado': estado})
+        return True
+    
     
             
 
