@@ -14,45 +14,49 @@ import tkinter as tk
 class Panaderia: # clase
     def __init__(self, archivo='panaderia.csv'): # metodo
         self.archivo = archivo 
-        self.campos = ['Nombre','Pan Frances','Pan Queso', 'Pancacho', 'Complejidad Pan Frances', 'Complejidad Pan Quezo', 'Complejidad Pancacho', 'Eficiencia', 'Estado']#Base de datos con laa columnas cambie croasaint por pancacho por que es lo mismo.
+        self.campos = ['Nombre','Pan Frances','Pan Queso', 'Pancacho', 'Complejidad Pan Frances', 'Complejidad Pan Queso', 'Complejidad Pancacho', 'Eficiencia', 'Estado']#Base de datos con laa columnas cambie croasaint por pancacho por que es lo mismo.
         if not os.path.isfile(self.archivo): #si la base de datos no existe la crea y si existe la deja quieta
             with open(self.archivo, 'w', newline='') as f: #lo que hace es que abre el archivo si existe se sobreescribe y si no crea el archivo La w es para sobreescribier tambien hay otras letras
                 writer = csv.DictWriter(f, fieldnames=self.campos)
                 writer.writeheader() # estas dos ultimas para agregarlas como diccionarios
 
 #Registro
-    def registro():
+    def registro(self, nombre, pan_frances, pan_queso, pancacho):
+        pan_frances = int(pan_frances)
+        pan_queso = int(pan_queso)
+        pancacho = int(pancacho)
         nombre = str(nombre)#  lo comvertimos a tipo texto
         Com_Pf = round(random.uniform(1, 1.5), 2)  # Usamos uniform para decimales
         Com_Pq = round(random.uniform(1, 1.5), 2)
         Com_Pc = round(random.uniform(1, 1.5), 2)
         ## PARA HACER LA EFICIENCIA LA VOY A HACER EN DOS VARIABLES EL NUMERADOR Y EL DENOMINADOR YA QUE LA FORMULA ES UNA DIVISIÓN
-        numerador = (pan_frances*Com_Pf)+(pan_quezo*Com_Pq)+(pancacho*Com_Pc)
+        numerador = (pan_frances*Com_Pf)+(pan_queso*Com_Pq)+(pancacho*Com_Pc)
         denominador = (Com_Pf+Com_Pq+Com_Pc)
         eficiencia = (numerador/denominador)
         if eficiencia >= 300:
             estado = "Cumple"
         else:
             estado = "No cumple"
-        with open(self.archivo, 'a', newline='') as f:  
-            writer = csv.DictWriter(f, fieldnames=self.campos)
-            writer.writerow({  # Corregi writeheader por writerow
-                'Nombre': nombre, 
-                'Pan Frances': pan_frances, 
-                'Pan Queso': pan_quezo,  
-                'Pancacho': pancacho,
-                'Complejidad Pan Frances': Com_Pf, 
-                'Complejidad Pan Queso': Com_Pq, 
-                'Complejidad Pancacho': Com_Pc, 
-                'Eficiencia': eficiencia,  
-                'Estado': estado})
+        with open(self.archivo, 'a', newline='') as f:
+         writer = csv.DictWriter(f, fieldnames=self.campos)
+         writer.writerow({
+            'Nombre': nombre,
+            'Pan Frances': pan_frances,
+            'Pan Queso': pan_queso,
+            'Pancacho': pancacho,
+            'Complejidad Pan Frances': Com_Pf,
+            'Complejidad Pan Queso': Com_Pq,
+            'Complejidad Pancacho': Com_Pc,
+            'Eficiencia': eficiencia,
+            'Estado': estado
+        })
         return True
     def reporte_general(self):
         # 1 Reporte general de nombre eficiencia y estado 
         df = pd.read_csv(self.archivo)
         # Agrego una verificacion por si no hay datos
         if df.size == 0:
-            print ('El archivo esta vacio registre almenos 1 usuario')
+            print ('El archivo esta vacio registre al menos 1 usuario')
             return
         else:
             reporte_g = df[['Nombre', 'Eficiencia', 'Estado']]

@@ -10,9 +10,11 @@ import pandas as pd
 import os
 import Analisis
 from tkinter import messagebox
+from Analisis import Panaderia
 
+conexion = Panaderia("panaderia.csv")
 ## Van las funciones
-gestor = Analisis.Panaderia()
+
 
 #Espacio para las funciones
 def mostrar_registro():
@@ -23,8 +25,8 @@ def mostrar_registro():
  #frame para el formulario
 
  #formulario
- tk.Label(subventana, text="Nombre", bg="#B4CF66").grid(row=0, column=0, padx=10, pady=5)
- entry_nombre = tk.Entry(subventana)
+ tk.Label(subventana, text="Nombre", bg="#B4CF66").grid(row=0, column=0, padx=10, pady=5)# etiqueta
+ entry_nombre = tk.Entry(subventana)#cuadro de texto
  entry_nombre.grid(row=0, column=1, padx=10, pady=5)
     
  tk.Label(subventana, text="Pan Frances", bg="#B4CF66").grid(row=1, column=0, padx=10, pady=5)
@@ -39,21 +41,24 @@ def mostrar_registro():
  entry_pancacho = tk.Entry(subventana)
  entry_pancacho.grid(row=3, column=1, padx=10, pady=5)
  def registrar ():
-  nombre = entry_nombre.get().strip()
+  nombre = entry_nombre.get().strip() # enviamos a la base de datos
   pan_frances = entry_pan_frances.get().strip()
   pan_queso = entry_pan_queso.get().strip()
   pancacho = entry_pancacho.get().strip()
-  if not all([nombre, pan_frances, pan_queso, pancacho]):
-        messagebox.showwarning("Campos vacíos", "Por favor completa todos los campos.")
+  if not all([nombre, pan_frances, pan_queso, pancacho]): # verica que esten llenos
+        messagebox.showwarning("Campos vacíos", "Completa todos los campos")
         return
-  if not nombre.replace(" ", "").isalpha():
-     messagebox.showwarning("Campos vacíos", "Por favor completa todos los campos.")
+  if not nombre.replace(" ", "").isalpha():# verifica que sea solo letras y permite los espacios
+     ##
+     messagebox.showwarning("Campos vacíos", "Digita solo letras en el nombre") 
      return
   try:
-    all([int(pan_frances), float(pan_queso), float(pancacho)])
+    all([int(pan_frances), int(pan_queso), int(pancacho)]) # Verifica que los panes sean numeros enteros
   except ValueError:
       messagebox.showerror("Error", "Pan frances, Pan queso  y pancacho deben ser numeros ya que corresponden a la cantidad elaborada.")
-      return
+      return    
+  resultado = conexion.registro(nombre, pan_frances, pan_queso, pancacho)
+  messagebox.showinfo("Exito", "Registro guardado")
  boton5 = tk.Button(subventana, text="Registrar", font=("Arial", 10), fg="white", bg="#FF5A33", width=12, command=registrar)
  boton5.grid(row=4, column=0, padx=18, pady=10)
 
