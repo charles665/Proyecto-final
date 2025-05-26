@@ -75,7 +75,7 @@ class Panaderia: # clase
         conteo_estados = df['Estado'].value_counts()
         plt.figure()
         plt.title('Grafica trabajadores que cumplieron')
-        plt.pie(conteo_estados.index, colors=['#FF5A33', '#44803F'])
+        plt.pie(conteo_estados, labels=conteo_estados.index, colors=['#FF5A33', '#44803F'])
         plt.show()
     def matriz (self):
         df = pd.read_csv(self.archivo)
@@ -91,21 +91,44 @@ class Panaderia: # clase
         ##https://stackoverflow.com/questions/42750551/converting-strings-to-a-lower-case-in-pandas
         if panadero.empty:
             return
-        eficiencia = (['Eficiencia'].values[0])# toma el primer valor de la columna eficiencia
+        eficiencia = panadero['Eficiencia'].values[0]# toma el primer valor de la columna eficiencia
         estado = panadero['Estado'].values[0] # toma el primer valor de estado
         panes_panadero = {'Pan Frances': int(panadero['Pan Frances']),'Pan Queso': int(operario['Pan Queso']),'Pancacho': int(operario['Pancacho'])} # Lista con los panes producidos por el panadero
         complejida_panadero = {'Pan Frances': float(panadero['Complejidad Pan Frances']),'Pan Queso': float(operario['Complejidad Pan Queso']),'Pancacho': float(operario['Complejidad Pancacho'])}
         eficiencia_final = {}
         i=0
-        for i in panes_panadero:
+        for i in panes_panadero: 
          cantidad = panes_panadero[i]
          complejidad = complejida_panadero[i]
          resultado = cantidad * complejidad
          eficiencia_final[i] = resultado
-    def Grafi_produccion():
-        pass
-    def Grafi_eficiencia():
-        pass
+    def Grafi_produccion(self, panes_panadero):
+        tiposde_pan = ['Pan Frances', 'Pan Queso', 'Pancacho']
+        cantidades = list(panes_panadero.values())
+        plt.figure()
+        plt.bar(tiposde_pan, cantidades, color='orange')
+        plt.title('Producción por pan')
+        plt.xlabel('Tipo de pan')
+        plt.ylabel('Cantidad producida')
+        plt.show()
+    def Grafi_complejidad(self, complejida_panadero):
+        tiposde_pan = ['Pan Frances', 'Pan Queso', 'Pancacho']
+        niveles = list(complejida_panadero.values())
+        plt.bar(tiposde_pan, niveles, color='skyblue')
+        plt.title(' Complejidad')
+        plt.xlabel('Tipo de pan')
+        plt.ylabel('Nivel de complejidad')
+        plt.show()
+    def Grafi_eficiencia(self, eficiencia_final):
+        tiposde_pan = ['Pan Frances', 'Pan Queso', 'Pancacho']
+        valor_efici = list(eficiencia_final.values())
+        plt.bar(tiposde_pan, valor_efici, color='green')
+        plt.title('Por eficiencia')
+        plt.xlabel('Tipo de pan')
+        plt.ylabel('Valor eficiencia (producción × complejidad)')
+        plt.show()
+    
+
 
     
 

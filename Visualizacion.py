@@ -43,6 +43,15 @@ def mostrar_Registro(frame_registro):##Aqui debemos poner el frame para organiza
      if not all([nombre, pan_frances, pan_queso, pancacho]): # verica que esten llenos
         messagebox.showwarning("Campos vacíos", "Completa todos los campos")
         return
+     if pan_queso > 500:
+        messagebox.showwarning("Limite", "Solo se permiten valores menores o iguales a 500 en pan queso")
+        return
+     if pancacho > 500:
+        messagebox.showwarning("Limite", "Solo se permiten valores menores o iguales a 500 en pancacho")
+        return
+     if pan_frances> 500:
+        messagebox.showwarning("Limite", "Solo se permiten valores menores o iguales a 500 en pan frances")
+        return
      if not nombre.replace(" ", "").isalpha():# verifica que sea solo letras y permite los espacios
      ##https://www.w3schools.com/python/ref_string_isalpha.asp
         messagebox.showwarning("Campos vacíos", "Digita solo letras en el nombre") 
@@ -57,10 +66,23 @@ def mostrar_Registro(frame_registro):##Aqui debemos poner el frame para organiza
   boton5 = tk.Button(frame_registro, text="Registrar", font=("Arial", 10), fg="white", bg="#FF5A33", width=12, command=registrar)
   boton5.grid(row=4, column=0, padx=18, pady=10)
 
-def funcion_reporte_general():
-    pass
+def mostrar_reporte_general(frame_reporte):
+  def reporteG():
+        df = pd.read_csv("panaderia.csv")
+        if df.empty:##Revisamos que no este vacio
+            messagebox.showinfo("Sin datos", "Registra como minimo un usuario")
+            return
+        texto.delete("1.0", tk.END)
+        texto.insert(tk.END, df[['Nombre', 'Eficiencia', 'Estado']].to_string(index=False))
+        conexion.grafico_torta()
+        conexion.matriz()
+  tk.Label(frame_reporte, text="Reporte General", font=("Arial", 14), bg="#F9F9F9").pack(pady=10)
+  texto = tk.Text(frame_reporte, width=80, height=15)
+  texto.pack()
+  boton = tk.Button(frame_reporte, text="Ver Reporte", command=reporteG, bg="#44803F", fg="white")
+  boton.pack(pady=10)
 def funcion_reporte_individual():
-    pass
+    print ( 's')
 
 #Ventana principal
 ventana = tk.Tk()#inicio la ventana
@@ -77,16 +99,16 @@ notebook.pack(expand=True, fill="both")
 #   creamos las pestañas
 pestaña_registro = tk.Frame(notebook, bg="#D0F4DE")
 pestaña_general = tk.Frame(notebook, bg="#F9F9F9")
-pestaña_individual = tk.Frame(notebook, bg="#FFCAD4")
+
 
 # unimos las unciones a cada pestaña para que al abrirlas sea lo que nos muestre
 mostrar_Registro(pestaña_registro)
-funcion_reporte_general(pestaña_general)
-funcion_reporte_individual(pestaña_individual)
+mostrar_reporte_general(pestaña_general)
+
 
 # Agregar las pestaña la ventana principal
 notebook.add(pestaña_registro, text="Registro")
 notebook.add(pestaña_general, text="Reporte General")
-notebook.add(pestaña_individual, text="Reporte Individual")
+
 
 ventana.mainloop()
