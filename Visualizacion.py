@@ -9,13 +9,53 @@ import math
 import pandas as pd
 import os
 import Analisis
+from tkinter import messagebox
 
 ## Van las funciones
 gestor = Analisis.Panaderia()
 
 #Espacio para las funciones
 def mostrar_registro():
- pass
+ subventana = tk.Toplevel()
+ subventana.title("Registro")
+ subventana.geometry("500x300")
+ subventana.configure(bg='#146152')
+ #frame para el formulario
+
+ #formulario
+ tk.Label(subventana, text="Nombre", bg="#B4CF66").grid(row=0, column=0, padx=10, pady=5)
+ entry_nombre = tk.Entry(subventana)
+ entry_nombre.grid(row=0, column=1, padx=10, pady=5)
+    
+ tk.Label(subventana, text="Pan Frances", bg="#B4CF66").grid(row=1, column=0, padx=10, pady=5)
+ entry_pan_frances = tk.Entry(subventana)
+ entry_pan_frances.grid(row=1, column=1, padx=10, pady=5)
+    
+ tk.Label(subventana, text="Pan Queso", bg="#B4CF66").grid(row=2, column=0, padx=10, pady=5)
+ entry_pan_queso = tk.Entry(subventana)
+ entry_pan_queso.grid(row=2, column=1, padx=10, pady=5)
+    
+ tk.Label(subventana, text="Pancacho", bg="#B4CF66").grid(row=3, column=0, padx=10, pady=5)
+ entry_pancacho = tk.Entry(subventana)
+ entry_pancacho.grid(row=3, column=1, padx=10, pady=5)
+ def registrar ():
+  nombre = entry_nombre.get().strip()
+  pan_frances = entry_pan_frances.get().strip()
+  pan_queso = entry_pan_queso.get().strip()
+  pancacho = entry_pancacho.get().strip()
+  if not all([nombre, pan_frances, pan_queso, pancacho]):
+        messagebox.showwarning("Campos vacíos", "Por favor completa todos los campos.")
+        return
+  if not nombre.replace(" ", "").isalpha():
+     messagebox.showwarning("Campos vacíos", "Por favor completa todos los campos.")
+     return
+  try:
+    all([int(pan_frances), float(pan_queso), float(pancacho)])
+  except ValueError:
+      messagebox.showerror("Error", "Pan frances, Pan queso  y pancacho deben ser numeros ya que corresponden a la cantidad elaborada.")
+      return
+ boton5 = tk.Button(subventana, text="Registrar", font=("Arial", 10), fg="white", bg="#FF5A33", width=12, command=registrar)
+ boton5.grid(row=4, column=0, padx=18, pady=10)
 
 #Ventana principal
 ventana = tk.Tk()#inicio la ventana

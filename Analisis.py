@@ -23,39 +23,9 @@ class Panaderia: # clase
 #Registro
     def registro():
         nombre = str(nombre)#  lo comvertimos a tipo texto
-        Com_Pf = round(random.randint(1, 1.5),2) # generamos el numero aleatorio entre 1 y 1,5
-        Com_Pq = round(random.randint(1, 1.5),2)
-        Com_Pc = round(random.randint(1, 1.5),2)
-        while True: # bucle infinito
-            try:# validaciones
-                pan_frances = int(pan_frances) #convertimos a entero
-                if pan_frances >500: # verificacamos que sea mayor que 500
-                    messagebox.showerror("Error", "El numero debe ser menor o igual a 500") # mensaje de error si es mayor que 500
-                else:
-                    messagebox.showinfo("Exito", "Numero registrado") # si hizo las cosas bien
-                    break # sale del bucle
-            except ValueError:
-                messagebox.showerror("Error", "El valor debe ser un numero") # no es numero
-        while True: 
-            try:
-                pan_quezo = int(pan_quezo) 
-                if pan_quezo >500:
-                    messagebox.showerror("Error", "El numero debe ser menor o igual a 500") 
-                else:
-                    messagebox.showinfo("Exito", "Numero registrado") 
-                    break 
-            except ValueError:
-                messagebox.showerror("Error", "El numero debe ser entero")
-        while True: 
-            try:
-                pancacho = int(pancacho) 
-                if pancacho >500:
-                    messagebox.showerror("Error", "El numero debe ser menor o igual a 500") 
-                else:
-                    messagebox.showinfo("Exito", "Numero registrado") 
-                    break 
-            except ValueError:
-                messagebox.showerror("Error", "El numero debe ser entero")
+        Com_Pf = round(random.uniform(1, 1.5), 2)  # Usamos uniform para decimales
+        Com_Pq = round(random.uniform(1, 1.5), 2)
+        Com_Pc = round(random.uniform(1, 1.5), 2)
         ## PARA HACER LA EFICIENCIA LA VOY A HACER EN DOS VARIABLES EL NUMERADOR Y EL DENOMINADOR YA QUE LA FORMULA ES UNA DIVISIÓN
         numerador = (pan_frances*Com_Pf)+(pan_quezo*Com_Pq)+(pancacho*Com_Pc)
         denominador = (Com_Pf+Com_Pq+Com_Pc)
@@ -86,21 +56,28 @@ class Panaderia: # clase
             return
         else:
             reporte_g = df[['Nombre', 'Eficiencia', 'Estado']]
-        # 2 Estadisticas relevante
-        
+        # 2 Estadisticas relevantes (Utilizo describe)
+        estadisticas_descriptivas = df[['Nombre', 'Eficiencia', 'Estado']].describe()
+        # 3 Promedio de eficacia
+        lista_eficiencia = df['Eficiencia'].tolist() # Convertimos a lista para sacar el promedio
+        promedio_ef = sum(lista_eficiencia)/len(lista_eficiencia) 
+        promedio_ef_melo = round(promedio_ef, 2)
+    ##GRAFICOS
+    #Torta
+    def grafico_torta (self):
+        df = pd.read_csv(self.archivo)
+        conteo_estados = df['Estado'].value_counts()
+        plt.figure()
+        plt.title('Grafica trabajadores que cumplieron')
+        plt.pie(conteo_estados.index, colors=['#FF5A33', '#44803F'])
+        plt.show()
+    def matriz (self):
+        df = pd.read_csv(self.archivo)
+        productos = df[['Pan Frances', 'Pan Queso', 'Pancacho']]  
+        matriz_corr = productos.corr()
+        plt.figure()
+        sns.heatmap(matriz_corr, annot=True, cmap='coolwarm', fmt=".2f")
+        plt.title('Matriz de Correlacion')
+        plt.show()
     def reporte_individual(self):
         pass
-
-
-    
-            
-
-
-
-#Reporte general
-
-
-#Reporte individual
-
-
-#Salir
