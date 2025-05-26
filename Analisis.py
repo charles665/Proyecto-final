@@ -16,6 +16,7 @@ class Panaderia: # clase
         self.archivo = archivo 
         self.campos = ['Nombre','Pan Frances','Pan Queso', 'Pancacho', 'Complejidad Pan Frances', 'Complejidad Pan Queso', 'Complejidad Pancacho', 'Eficiencia', 'Estado']#Base de datos con laa columnas cambie croasaint por pancacho por que es lo mismo.
         if not os.path.isfile(self.archivo): #si la base de datos no existe la crea y si existe la deja quieta
+            ## https://www-geeksforgeeks-org.translate.goog/python-os-path-isfile-method/?_x_tr_sl=en&_x_tr_tl=es&_x_tr_hl=es&_x_tr_pto=tc
             with open(self.archivo, 'w', newline='') as f: #lo que hace es que abre el archivo si existe se sobreescribe y si no crea el archivo La w es para sobreescribier tambien hay otras letras
                 writer = csv.DictWriter(f, fieldnames=self.campos)
                 writer.writeheader() # estas dos ultimas para agregarlas como diccionarios
@@ -38,6 +39,7 @@ class Panaderia: # clase
         else:
             estado = "No cumple"
         with open(self.archivo, 'a', newline='') as f:
+         ## https://stackoverflow.com/questions/2918362/writing-string-to-a-file-on-a-new-line-every-time
          writer = csv.DictWriter(f, fieldnames=self.campos)
          writer.writerow({
             'Nombre': nombre,
@@ -56,7 +58,7 @@ class Panaderia: # clase
         df = pd.read_csv(self.archivo)
         # Agrego una verificacion por si no hay datos
         if df.size == 0:
-            print ('El archivo esta vacio registre al menos 1 usuario')
+        ## https://www.geeksforgeeks.org/python-pandas-df-size-df-shape-and-df-ndim/
             return
         else:
             reporte_g = df[['Nombre', 'Eficiencia', 'Estado']]
@@ -83,5 +85,30 @@ class Panaderia: # clase
         sns.heatmap(matriz_corr, annot=True, cmap='coolwarm', fmt=".2f")
         plt.title('Matriz de Correlacion')
         plt.show()
-    def reporte_individual(self):
+    def reporte_individual(self, nom_panadero):
+        df = pd.read_csv(self.archivo)      
+        panadero = df[df['Nombre'].str.lower() == nom_panadero.lower()]#ignora mayuscalus y minusculas
+        ##https://stackoverflow.com/questions/42750551/converting-strings-to-a-lower-case-in-pandas
+        if panadero.empty:
+            return
+        eficiencia = (['Eficiencia'].values[0])# toma el primer valor de la columna eficiencia
+        estado = panadero['Estado'].values[0] # toma el primer valor de estado
+        panes_panadero = {'Pan Frances': int(panadero['Pan Frances']),'Pan Queso': int(operario['Pan Queso']),'Pancacho': int(operario['Pancacho'])} # Lista con los panes producidos por el panadero
+        complejida_panadero = {'Pan Frances': float(panadero['Complejidad Pan Frances']),'Pan Queso': float(operario['Complejidad Pan Queso']),'Pancacho': float(operario['Complejidad Pancacho'])}
+        eficiencia_final = {}
+        i=0
+        for i in panes_panadero:
+         cantidad = panes_panadero[i]
+         complejidad = complejida_panadero[i]
+         resultado = cantidad * complejidad
+         eficiencia_final[i] = resultado
+    def Grafi_produccion():
         pass
+    def Grafi_eficiencia():
+        pass
+
+    
+
+   
+
+

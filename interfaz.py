@@ -1,28 +1,13 @@
-#Importar las librerias necesarias
-import numpy as np
-import matplotlib.pyplot as plt
-import seaborn as sns
 import tkinter as tk
-import csv
-import random
-import math
-import pandas as pd
-import os
-import Analisis
-from tkinter import messagebox
-from Analisis import Panaderia
 from tkinter import ttk
-
-conexion = Panaderia("panaderia.csv")
-
+from tkinter import messagebox
 
 #Funciones 
-def mostrar_Registro(frame_registro):##Aqui debemos poner el frame para organizar lo que va dentro 
+def mostrar_Registro(frame_registro):
   #formulario
   tk.Label(frame_registro, text="Nombre", bg="#B4CF66").grid(row=0, column=0, padx=10, pady=5)# etiqueta
   entry_nombre = tk.Entry(frame_registro)#cuadro de texto
   entry_nombre.grid(row=0, column=1, padx=10, pady=5)
-  ## https://hektorprofe.github.io/python/interfaces-graficas-con-tkinter/widget-label-etiqueta-de-texto/
 
   tk.Label(frame_registro, text="Pan Frances", bg="#B4CF66").grid(row=1, column=0, padx=10, pady=5)
   entry_pan_frances = tk.Entry(frame_registro)
@@ -44,7 +29,7 @@ def mostrar_Registro(frame_registro):##Aqui debemos poner el frame para organiza
         messagebox.showwarning("Campos vacíos", "Completa todos los campos")
         return
      if not nombre.replace(" ", "").isalpha():# verifica que sea solo letras y permite los espacios
-     ##https://www.w3schools.com/python/ref_string_isalpha.asp
+     ##
         messagebox.showwarning("Campos vacíos", "Digita solo letras en el nombre") 
         return
      try:
@@ -57,9 +42,9 @@ def mostrar_Registro(frame_registro):##Aqui debemos poner el frame para organiza
   boton5 = tk.Button(frame_registro, text="Registrar", font=("Arial", 10), fg="white", bg="#FF5A33", width=12, command=registrar)
   boton5.grid(row=4, column=0, padx=18, pady=10)
 
-def funcion_reporte_general():
+def funcion_reporte_general(padre):
     pass
-def funcion_reporte_individual():
+def funcion_reporte_individual(padre):
     pass
 
 #Ventana principal
@@ -67,26 +52,24 @@ ventana = tk.Tk()#inicio la ventana
 ventana.title("Pagina de proyectos")#El titulo
 ventana.geometry('800x500')#Tamaño
 ventana.configure(bg='#FFEC5C')  # Cambiamos el fondo con color
-## https://www.geeksforgeeks.org/how-to-change-a-tkinter-window-background-color/
 
-# La partecita de arriba donde estan las pestañas
+# Crear el contenedor de pestañas
 notebook = ttk.Notebook(ventana)
 notebook.pack(expand=True, fill="both")
-## https://programacionpython80889555.wordpress.com/2020/03/10/anadiendo-pestanas-a-ventana-tkinter-con-ttk-notebook/
 
-#   creamos las pestañas
-pestaña_registro = tk.Frame(notebook, bg="#D0F4DE")
-pestaña_general = tk.Frame(notebook, bg="#F9F9F9")
-pestaña_individual = tk.Frame(notebook, bg="#FFCAD4")
+# Crear las pestañas
+pestana_registro = tk.Frame(notebook, bg="#D0F4DE")
+pestana_general = tk.Frame(notebook, bg="#F9F9F9")
+pestana_individual = tk.Frame(notebook, bg="#FFCAD4")
 
-# unimos las unciones a cada pestaña para que al abrirlas sea lo que nos muestre
-mostrar_Registro(pestaña_registro)
-funcion_reporte_general(pestaña_general)
-funcion_reporte_individual(pestaña_individual)
+# Agregar funciones a cada pestaña
+mostrar_Registro(pestana_registro)
+funcion_reporte_general(pestana_general)
+funcion_reporte_individual(pestana_individual)
 
-# Agregar las pestaña la ventana principal
-notebook.add(pestaña_registro, text="Registro")
-notebook.add(pestaña_general, text="Reporte General")
-notebook.add(pestaña_individual, text="Reporte Individual")
+# Añadir las pestañas al notebook
+notebook.add(pestana_registro, text="Registro")
+notebook.add(pestana_general, text="Reporte General")
+notebook.add(pestana_individual, text="Reporte Individual")
 
 ventana.mainloop()
