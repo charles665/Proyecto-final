@@ -75,7 +75,7 @@ class Panaderia: # clase
         conteo_estados = df['Estado'].value_counts()
         plt.figure()
         plt.title('Grafica trabajadores que cumplieron')
-        plt.pie(conteo_estados, labels=conteo_estados.index, colors=['#FF5A33', '#44803F'])
+        plt.pie(conteo_estados, labels=conteo_estados.index, colors=['#FFEC5C', '#146152'])
         plt.show()
     def matriz (self):
         df = pd.read_csv(self.archivo)
@@ -83,30 +83,32 @@ class Panaderia: # clase
         matriz_corr = productos.corr()
         plt.figure()
         sns.heatmap(matriz_corr, annot=True, cmap='coolwarm', fmt=".2f")
+        ## https://seaborn.pydata.org/generated/seaborn.heatmap.html
         plt.title('Matriz de Correlacion')
         plt.show()
     def reporte_individual(self, nom_panadero):
-        df = pd.read_csv(self.archivo)      
-        panadero = df[df['Nombre'].str.lower() == nom_panadero.lower()]#ignora mayuscalus y minusculas
+      df = pd.read_csv(self.archivo)      
+      panadero = df[df['Nombre'].str.lower() == nom_panadero.lower()] #toma nombre llo convierte a minuscula y luego todo nom_panadero 
+      ## https://stackoverflow.com/questions/19726029/how-can-i-make-pandas-dataframe-column-headers-all-lowercase
+      if panadero.empty:
         ##https://stackoverflow.com/questions/42750551/converting-strings-to-a-lower-case-in-pandas
-        if panadero.empty:
-            return
-        eficiencia = panadero['Eficiencia'].values[0]# toma el primer valor de la columna eficiencia
-        estado = panadero['Estado'].values[0] # toma el primer valor de estado
-        panes_panadero = {'Pan Frances': int(panadero['Pan Frances']),'Pan Queso': int(operario['Pan Queso']),'Pancacho': int(operario['Pancacho'])} # Lista con los panes producidos por el panadero
-        complejida_panadero = {'Pan Frances': float(panadero['Complejidad Pan Frances']),'Pan Queso': float(operario['Complejidad Pan Queso']),'Pancacho': float(operario['Complejidad Pancacho'])}
-        eficiencia_final = {}
-        i=0
-        for i in panes_panadero: 
-         cantidad = panes_panadero[i]
-         complejidad = complejida_panadero[i]
-         resultado = cantidad * complejidad
-         eficiencia_final[i] = resultado
+          return 
+      eficiencia = panadero['Eficiencia'].values[0]
+      estado = panadero['Estado'].values[0]
+      panes_panadero = {'Pan Frances': int(panadero['Pan Frances'].values[0]),'Pan Queso': int(panadero['Pan Queso'].values[0]),'Pancacho': int(panadero['Pancacho'].values[0])} # diccionarios que toman el primer valor de cada pan
+      complejida_panadero = {'Pan Frances': float(panadero['Complejidad Pan Frances'].values[0]),'Pan Queso': float(panadero['Complejidad Pan Quezo'].values[0]),'Pancacho': float(panadero['Complejidad Pancacho'].values[0])}
+      eficiencia_final = {}
+      for pan in panes_panadero:
+          cantidad = panes_panadero[pan]
+          complejidad = complejida_panadero[pan]
+          eficiencia_final[pan] = cantidad * complejidad
+      return eficiencia, estado, panes_panadero, complejida_panadero, eficiencia_final # regreso los valores
     def Grafi_produccion(self, panes_panadero):
-        tiposde_pan = ['Pan Frances', 'Pan Queso', 'Pancacho']
-        cantidades = list(panes_panadero.values())
+        tiposde_pan = ['Pan Frances', 'Pan Queso', 'Pancacho'] # creo una lista
+        cantidades = list(panes_panadero.values()) # crea una lista donde las keys son los tipos de panes
+        ##https://stackoverflow.com/questions/16228248/how-can-i-get-list-of-values-from-dict
         plt.figure()
-        plt.bar(tiposde_pan, cantidades, color='orange')
+        plt.bar(tiposde_pan, cantidades, color='#B4CF66')
         plt.title('Producción por pan')
         plt.xlabel('Tipo de pan')
         plt.ylabel('Cantidad producida')
@@ -115,6 +117,7 @@ class Panaderia: # clase
         tiposde_pan = ['Pan Frances', 'Pan Queso', 'Pancacho']
         niveles = list(complejida_panadero.values())
         plt.bar(tiposde_pan, niveles, color='skyblue')
+        ##https://stackoverflow.com/questions/16228248/how-can-i-get-list-of-values-from-dict
         plt.title(' Complejidad')
         plt.xlabel('Tipo de pan')
         plt.ylabel('Nivel de complejidad')
